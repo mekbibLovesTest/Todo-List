@@ -1,6 +1,7 @@
 import createTodo from "./todo";
 import createProject from "./project";
-import projects from "./projects";
+import { projects, populateProjects,stringifyProjects } from "./projects";
+
 
 var project1 = createProject('First Project');
 var todo1 = createTodo("Buy Groceries", "Make a list of essential groceries and go shopping for the week.", new Date(2023, 10, 15), "Medium", false);
@@ -45,11 +46,28 @@ project3.addTodo(todo12);
 projects.addProject(project1);
 projects.addProject(project2);
 projects.addProject(project3);
+
+console.log(stringifyProjects(projects));
+localStorage.setItem('projects', stringifyProjects(projects));
+
 projects.deleteProject(project1.getId());
-projects.getProjectList().forEach(project => {
-  console.log(project.getId());
-  console.log(project.getTitle());
+projects.deleteProject(project2.getId());
+projects.deleteProject(project3.getId());
+
+console.log("projects ");
+console.log(projects.getProjectList());
+
+if (localStorage.getItem("projects")) {
+  populateProjects(JSON.parse(localStorage.getItem('projects')));
+}
+projects.getProjectList().forEach(project => { 
+  console.log(project.getTitle())
+  project.getTodoList().forEach(todo => {
+    console.log(todo.getId());
+    console.log(todo.getTitle());
+    console.log(todo.getDescription());
+    console.log(todo.getDueDate());
+    console.log(todo.getPriority());
+    console.log(todo.getCompleted());
+  })
 })
-
-console.log(projects.findProject(project2.getId()).getTitle());
-
