@@ -5,15 +5,17 @@ module.exports = {
   mode:'development',
   entry:'./src/index.js',
   devtool: 'inline-source-map',
-  plugins: [
-    new HtmlWebpackPlugin({
-      title: 'ToDo List',
-    }),
-  ],
   output: {
     filename: 'main.js',
-    path: path.resolve(__dirname, 'dist')
+    path: path.resolve(__dirname, 'dist'),
+    clean:true,
   },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template:'./src/template.html',
+      inject:false,
+    })
+  ],
   devServer: {
     static: './dist',
   },
