@@ -9,13 +9,13 @@
 </head>
 
 <body>
-  <dialog>
+  <dialog id="todo">
     <fieldset>
       <legend>Add ToDo</legend>
       <form method="dialog">
         <span>
-          <label for="title">Title:</label>
-          <input type="text" name="title" id="title" required>
+          <label for="todoTitle">Title:</label>
+          <input type="text" name="title" id="todoTitle" required autofocus>
         </span>
         <span>
           <label for="description">Description:</label>
@@ -29,7 +29,7 @@
           <legend>Priority</legend>
           <span>
             <label for="high">High:</label>
-            <input type="radio" name="priority" id="high" value="high" >
+            <input type="radio" name="priority" id="high" value="high">
           </span>
           <span>
             <label for="medium">Medium:</label>
@@ -41,12 +41,31 @@
           </span>
         </fieldset>
         <div class="buttons">
-          <button formmethod="dialog">Cancel</button>
-          <button type="submit">Add Todo</button>
+          <button class="todoCancel">Cancel</button>
+          <button formmethod="dialog" id="addTodo">Add Todo</button>
         </div>
       </form>
     </fieldset>
   </dialog>
+  <dialog id="project">
+    <fieldset>
+      <Legend>Add Project</Legend>
+      <form method="dialog">
+        <span>
+          <label for="projectTitle">Title:</label>
+          <input type="text" name="title" id="projectTitle" required autofocus>
+        </span>
+        <div class="buttons">
+          <button class="projectCancel">Cancel</button>
+          <button formmethod="dialog" id="submitProject">Submit</button>
+        </div>
+      </form>
+    </fieldset>
+  </dialog>
+  <header>
+    <h1>Todo List</h1>
+    <button id="addProject">Add project</button>
+  </header>
   <div class="content">
     <div class="projects"></div>
   </div>
