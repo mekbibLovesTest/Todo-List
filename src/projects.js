@@ -12,6 +12,9 @@ export var projects = (() => {
     projectList.push(project);
   }
 
+  function resetProjectList() {
+    projectList = [];
+  }
   function findProject(id) {
     return projectList.find(project => project.getId() == id);
   }
@@ -20,20 +23,19 @@ export var projects = (() => {
     projectList = projectList.filter(project => project.getId() != id);
   }
 
-  return { getProjectList, addProject, findProject, deleteProject };
+  return { getProjectList, addProject, findProject, deleteProject, resetProjectList };
 })();
 
 export function populateProjects(projectFromStorage) {
+  projects.resetProjectList();
   projectFromStorage.forEach(project => {
     let newProject = createProject(project["title"]);
     project["todoList"].forEach(todo => {
-      let completed = todo["completed"];
-      console.log(completed)
       let newTodo = createTodo(todo["title"], todo["description"], new Date(todo["dueDate"]),
-                               todo["priority"], todo["completed"]);
+        todo["priority"], todo["completed"]);
       newProject.addTodo(newTodo);
     });
-    
+
     projects.addProject(newProject);
   })
 }

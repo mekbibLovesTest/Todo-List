@@ -1,41 +1,73 @@
 import createProjectSection from "./projectSection";
 import createTodo from "./todo";
-import { projects } from "./projects";
-export function openDialog(e) {
-  var projectsDiv = document.querySelector(".projects");
-  var dialog = document.querySelector('dialog');
-  dialog.show();
-  projectsDiv.inert = true;
-  selectSubmitButton(e.target.getAttribute('data-attribute'));
-}
-function selectSubmitButton(id) {
-  var submitButton = document.querySelector(`button[type='submit'`);
-  submitButton.addEventListener('click', (event) => {
-    return handleSubmit(event, id)
+import createProject from "./project";
+import { projects, stringifyProjects } from "./projects";
+
+export function addCancelEventListeners() {
+  var projectCancel = document.querySelector('.projectCancel');
+  var todoCancel = document.querySelector('.todoCancel');
+
+  projectCancel.addEventListener('click', (e) => {
+    e.preventDefault();
+    closeDialog(document.querySelector('#project'));
+  })
+  todoCancel.addEventListener('click', (e) => {
+    e.preventDefault();
+    closeDialog(document.querySelector('#todo'));
   })
 }
+export function openProjectDialog() {
+  var projectDialog = document.querySelector('#project');
+  projectDialog.showModal();
+  addProjectSubmitEventListener();
+}
 
-function handleSubmit(event, id) {
-  if (validateForm(getDataFromForm()) === false)
+export function openTodoDialog(e) {
+  var dialog = document.querySelector('#todo');
+  dialog.showModal();
+  addTodoSubmitButtonEventListener(e.target.getAttribute('data-attribute'));
+}
+function addProjectSubmitEventListener() {
+  var submitProject = document.querySelector('#submitProject');
+  submitProject.addEventListener('click', handleSubmitProject);
+}
+function addTodoSubmitButtonEventListener(id) {
+  var submitButton = document.querySelector('#addTodo');
+  submitButton.setAttribute('data-attribute', id);
+  submitButton.addEventListener('click', handleTodoSubmit)
+}
+
+function handleSubmitProject(e) {
+  var projectTitle = document.querySelector('#projectTitle');
+  if (projectTitle.value === '')
     return;
   else {
-    event.preventDefault();
-    let dialog = document.querySelector('dialog');
-    let projectsDiv = document.querySelector(".projects");
-    let todoData = getDataFromForm();
-    console.log(todoData);
-    let todo = createTodo(todoData.title, todoData.description, todoData.dueDate, todoData.priority, false);
-    projects.findProject(id).addTodo(todo);
-    console.log(projects.findProject(id).getTodoList());
-    dialog.close();
-    projectsDiv.inert = false;
-    resetForm()
-    createProjectSection();
+    e.preventDefault();
+    let projectDialog = document.querySelector('#project');
+    let newProject = createProject(projectTitle.value);
+    projects.addProject(newProject);
+    resetPage(projectDialog, 'project');
   }
 }
 
-function getDataFromForm() {
-  var title = document.querySelector('#title').value;
+function handleTodoSubmit(e) {
+  if (validateTodoForm(getTodoData()) === false)
+    return;
+  else {
+    e.preventDefault();
+
+    let todoDialog = document.querySelector('#todo');
+    let todoData = getTodoData();
+    let todo = createTodo(todoData.title, todoData.description, todoData.dueDate, todoData.priority, false);
+    projects.findProject(e.target.getAttribute('data-attribute')).addTodo(todo);
+
+    e.target.removeEventListener('click', handleTodoSubmit);
+    resetPage(todoDialog, 'todo');
+  }
+}
+
+function getTodoData() {
+  var title = document.querySelector('#todoTitle').value;
   var description = document.querySelector('#description').value;
   var dueDate = document.querySelector('#dueDate').value;
   var priority = document.querySelector(`input[type='radio']:checked`).value;
@@ -44,22 +76,40 @@ function getDataFromForm() {
   }
 }
 
-
-function validateForm(todo) {
+function validateTodoForm(todo) {
   if (todo.title === '' || todo.description === '' || todo.dueDate === '' || todo.priority === '')
     return false;
   return true;
 }
 
-function resetForm() {
-  var title = document.querySelector('#title');
-  title.value = '';
-  var description = document.querySelector('#description');
-  description.value = '';
-  var dueDate = document.querySelector('#dueDate');
-  dueDate.value = '';
-  var checkedPriority = document.querySelector(`input[type='radio']:checked`);
-  checkedPriority.checked = false;
-  var mediumPriority = document.querySelector('input#medium');
-  mediumPriority.checked = true;
+function resetForm(type) {
+  if (type === 'project') {
+    var projectTitle = document.querySelector('#projectTitle');
+    projectTitle.value = '';
+  }
+  else if (type === 'todo') {
+    var title = document.querySelector('#todoTitle');
+    title.value = '';
+    var description = document.querySelector('#description');
+    description.value = '';
+    var dueDate = document.querySelector('#dueDate');
+    dueDate.value = '';
+    var checkedPriority = document.querySelector(`input[type='radio']:checked`);
+    checkedPriority.checked = false;
+    var mediumPriority = document.querySelector('input#medium');
+    mediumPriority.checked = true;
+  }
+
 }
+function closeDialog(dialog) {
+  dialog.close();
+}
+
+function resetPage(dialog, type) {
+  resetForm(type);
+  closeDialog(dialog);
+  localStorage.setItem('projects', stringifyProjects(projects));
+  projects.resetProjectList();
+  createProjectSection();
+}
+

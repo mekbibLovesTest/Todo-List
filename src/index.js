@@ -1,6 +1,9 @@
-import createTodo from "./todo";
 import createProjectSection from "./projectSection";
-import { projects, populateProjects, stringifyProjects } from "./projects";
+import { addCancelEventListeners,openProjectDialog } from "./dialog";
 
 createProjectSection();
+addCancelEventListeners();
+
+var addProjectButton = document.querySelector('#addProject');
+addProjectButton.addEventListener('click', openProjectDialog);
 
