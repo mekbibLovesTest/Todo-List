@@ -1,15 +1,11 @@
 import createProject from "./project";
 import { projects, stringifyProjects, populateProjects } from "./projects";
-import { openTodoDialog } from "./dialog";
+import { addTodoDialog,editTodoDialog } from "./dialog";
 
-
-//check if projects exist in localstorage
-//if not create a default project
-//if it does exist get it and create the corresponding projects
 export default function createProjectSection() {
   var projectsDiv = document.querySelector(".projects");
-  if(projectsDiv.hasChildNodes()){
-    Array.from(projectsDiv.childNodes).forEach(child=>{
+  if (projectsDiv.hasChildNodes()) {
+    Array.from(projectsDiv.childNodes).forEach(child => {
       projectsDiv.removeChild(child);
     })
   }
@@ -34,15 +30,23 @@ function createProjectCard(project) {
   var addToDoButton = document.createElement("button");
   addToDoButton.textContent = 'Add';
   addToDoButton.setAttribute('data-attribute', project.getId())
-  addToDoButton.addEventListener('click', openTodoDialog);
+  addToDoButton.addEventListener('click', addTodoDialog);
 
   var todoList = document.createElement('div');
   project.getTodoList().forEach(todo => {
-    let todoElement = document.createElement('h2');
-    todoElement.textContent = todo.getTitle();
-    todoList.append(todoElement);
+    todoList.append(createTodoElement(project,todo));
   });
 
   projectCard.append(projectTitle, addToDoButton, todoList);
   return projectCard;
+}
+
+function createTodoElement(project,todo){
+  let todoElement = document.createElement('h2');
+  todoElement.textContent = todo.getTitle();
+  todoElement.setAttribute('projectId', project.getId());
+  todoElement.setAttribute('todoId', todo.getId());
+  todoElement.addEventListener('click', editTodoDialog);
+  
+  return todoElement;
 }
