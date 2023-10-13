@@ -61,6 +61,10 @@ export function changeCompleted(e) {
   todo.setCompleted(newCompletedValue);
   localStorage.setItem('projects',stringifyProjects(projects));
 }
+export function deleteProject(e){
+  projects.deleteProject(e.target.getAttribute('projectId'));
+  resetPage();
+}
 function editTodo(todoData, todo) {
   todo.setTitle(todoData.title);
   todo.setDescription(todoData.description);

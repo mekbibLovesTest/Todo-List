@@ -1,7 +1,7 @@
 import createProject from "./project";
 import { projects, stringifyProjects, populateProjects } from "./projects";
 import { addTodoDialog, editTodoDialog } from "./dialog";
-import { handleDeleteTodoButton, changeCompleted } from "./buttonHandle";
+import { handleDeleteTodoButton, changeCompleted, deleteProject } from "./buttonHandle";
 
 export default function createProjectSection() {
   var projectsDiv = document.querySelector(".projects");
@@ -20,7 +20,6 @@ export default function createProjectSection() {
   var projectCards = projects.getProjectList().map((project) => createProjectCard(project))
 
   projectsDiv.append(...projectCards)
-
 }
 
 function createProjectCard(project) {
@@ -38,8 +37,17 @@ function createProjectCard(project) {
     todoList.append(createTodoElement(project, todo));
   });
 
-  projectCard.append(projectTitle, addToDoButton, todoList);
+  projectCard.append(projectTitle, addToDoButton, createProjectDeleteButton(project), todoList);
   return projectCard;
+}
+
+function createProjectDeleteButton(project){
+  var deleteProjectButton = document.createElement('button');
+  deleteProjectButton.textContent = 'delete';
+  deleteProjectButton.setAttribute('projectId',project.getId());
+  deleteProjectButton.addEventListener('click',deleteProject);
+  
+  return deleteProjectButton;
 }
 
 function createTodoElement(project, todo) {
@@ -51,11 +59,11 @@ function createTodoElement(project, todo) {
   todoElement.setAttribute('todoId', todo.getId());
   todoElement.addEventListener('click', editTodoDialog);
 
-  todoDiv.append(todoElement, createDeleteButton(project, todo), createCheckInput(project, todo));
+  todoDiv.append(todoElement, createDeleteTodoButton(project, todo), createCheckInput(project, todo));
   return todoDiv;
 }
 
-function createDeleteButton(project, todo) {
+function createDeleteTodoButton(project, todo) {
   var deleteTodoButton = document.createElement('button');
   deleteTodoButton.textContent = 'Delete';
   deleteTodoButton.setAttribute('projectId', project.getId());
