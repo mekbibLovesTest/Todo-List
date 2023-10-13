@@ -29,7 +29,7 @@ function createProject(title){
     return todoList.find(todo => todo.getId() == id);
   }
 
-  function deleteToDo(id){
+  function deleteTodo(id){
     todoList = todoList.filter(todo => todo.getId() != id);
   }
   function sortTodoList(){
@@ -37,7 +37,7 @@ function createProject(title){
   }
   return {
     getId,getTitle,getTodoList,
-    setTitle,addTodo,findTodo,deleteToDo
+    setTitle,addTodo,findTodo,deleteTodo
   }
 }
 

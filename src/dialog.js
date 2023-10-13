@@ -1,7 +1,5 @@
-import createProjectSection from "./projectSection";
-import createTodo from "./todo";
-import createProject from "./project";
-import { projects, stringifyProjects } from "./projects";
+import { projects } from "./projects";
+import { handleProjectSubmit, handleTodoSubmit, handleEditSubmit } from "./buttonHandle";
 
 export function addCancelEventListeners() {
   var projectCancel = document.querySelector('.projectCancel');
@@ -40,9 +38,29 @@ export function editTodoDialog(e) {
   var dialog = document.querySelector('#todo');
   dialog.showModal();
   populateDialogInput(todo)
-  addEditTodoSubmitEventListener(projectId,todoId)
+  addEditTodoSubmitEventListener(projectId, todoId)
 }
-
+export function closeDialog(dialog) {
+  dialog.close();
+}
+export function resetForm(type) {
+  if (type === 'project') {
+    var projectTitle = document.querySelector('#projectTitle');
+    projectTitle.value = '';
+  }
+  else if (type === 'todo') {
+    var title = document.querySelector('#todoTitle');
+    title.value = '';
+    var description = document.querySelector('#description');
+    description.value = '';
+    var dueDate = document.querySelector('#dueDate');
+    dueDate.value = '';
+    var checkedPriority = document.querySelector(`input[type='radio']:checked`);
+    checkedPriority.checked = false;
+    var mediumPriority = document.querySelector('input#medium');
+    mediumPriority.checked = true;
+  }
+}
 function populateDialogInput(todo) {
   var title = document.querySelector('#todoTitle');
   title.value = todo.getTitle();
@@ -66,7 +84,7 @@ function formatDate(date) {
 
 function addProjectSubmitEventListener() {
   var submitProject = document.querySelector('#submitProject');
-  submitProject.addEventListener('click', handleSubmitProject);
+  submitProject.addEventListener('click', handleProjectSubmit);
 }
 
 function addTodoSubmitButtonEventListener(id) {
@@ -76,109 +94,12 @@ function addTodoSubmitButtonEventListener(id) {
   submitButton.addEventListener('click', handleTodoSubmit)
 }
 
-function addEditTodoSubmitEventListener(projectId,todoId){
+function addEditTodoSubmitEventListener(projectId, todoId) {
   var editButton = document.querySelector('#todoSubmit');
   editButton.textContent = 'Edit Todo';
-  editButton.setAttribute('projectId',projectId);
-  editButton.setAttribute('todoId',todoId);
-  editButton.addEventListener('click',handleEditSubmit);
+  editButton.setAttribute('projectId', projectId);
+  editButton.setAttribute('todoId', todoId);
+  editButton.addEventListener('click', handleEditSubmit);
 }
 
-function handleSubmitProject(e) {
-  var projectTitle = document.querySelector('#projectTitle');
-  if (projectTitle.value === '')
-    return;
-  else {
-    e.preventDefault();
-    let projectDialog = document.querySelector('#project');
-    let newProject = createProject(projectTitle.value);
-    projects.addProject(newProject);
-    resetPage(projectDialog, 'project');
-  }
-}
-
-function handleTodoSubmit(e) {
-  if (validateTodoForm(getTodoData()) === false)
-    return;
-  else {
-    e.preventDefault();
-
-    let todoDialog = document.querySelector('#todo');
-    let todoData = getTodoData();
-    let todo = createTodo(todoData.title, todoData.description, new Date(todoData.dueDate), todoData.priority, false);
-    projects.findProject(e.target.getAttribute('data-attribute')).addTodo(todo);
-
-    e.target.removeEventListener('click', handleTodoSubmit);
-    resetPage(todoDialog, 'todo');
-  }
-}
-function handleEditSubmit(e){
-  if (validateTodoForm(getTodoData()) === false)
-  return;
-  else {
-    e.preventDefault();
-    let todoDialog = document.querySelector('#todo');
-    let todoData = getTodoData();
-    let project = projects.findProject(e.target.getAttribute('projectId'));
-    let todo = project.findTodo(e.target.getAttribute('todoId'));
-    editTodo(todoData,todo);
-
-    e.target.removeEventListener('click', handleEditSubmit);
-    resetPage(todoDialog,'todo');
-  }
-}
-
-function editTodo(todoData,todo){
-  todo.setTitle(todoData.title);
-  todo.setDescription(todoData.description);
-  todo.setDueDate(new Date(todoData.dueDate));
-  todo.setPriority(todoData.priority)
-}
-
-function getTodoData() {
-  var title = document.querySelector('#todoTitle').value;
-  var description = document.querySelector('#description').value;
-  var dueDate = document.querySelector('#dueDate').value;
-  var priority = document.querySelector(`input[type='radio']:checked`).value;
-  return {
-    title, description, dueDate, priority
-  }
-}
-
-function validateTodoForm(todo) {
-  if (todo.title === '' || todo.description === '' || todo.dueDate === '' || todo.priority === '')
-    return false;
-  return true;
-}
-
-function resetForm(type) {
-  if (type === 'project') {
-    var projectTitle = document.querySelector('#projectTitle');
-    projectTitle.value = '';
-  }
-  else if (type === 'todo') {
-    var title = document.querySelector('#todoTitle');
-    title.value = '';
-    var description = document.querySelector('#description');
-    description.value = '';
-    var dueDate = document.querySelector('#dueDate');
-    dueDate.value = '';
-    var checkedPriority = document.querySelector(`input[type='radio']:checked`);
-    checkedPriority.checked = false;
-    var mediumPriority = document.querySelector('input#medium');
-    mediumPriority.checked = true;
-  }
-}
-
-function closeDialog(dialog) {
-  dialog.close();
-}
-
-function resetPage(dialog, type) {
-  resetForm(type);
-  closeDialog(dialog);
-  localStorage.setItem('projects', stringifyProjects(projects));
-  projects.resetProjectList();
-  createProjectSection();
-}
 
