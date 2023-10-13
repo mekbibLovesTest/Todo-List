@@ -52,7 +52,15 @@ export function handleEditSubmit(e) {
     resetPage(todoDialog, 'todo');
   }
 }
-
+export function changeCompleted(e) {
+  var projectId = e.target.getAttribute('projectId');
+  var todoId = e.target.getAttribute('todoId');
+  var project = projects.findProject(projectId);
+  var todo = project.findTodo(todoId);
+  const newCompletedValue = todo.getCompleted() ? false : true;
+  todo.setCompleted(newCompletedValue);
+  localStorage.setItem('projects',stringifyProjects(projects));
+}
 function editTodo(todoData, todo) {
   todo.setTitle(todoData.title);
   todo.setDescription(todoData.description);

@@ -1,7 +1,7 @@
 import createProject from "./project";
 import { projects, stringifyProjects, populateProjects } from "./projects";
-import { addTodoDialog, editTodoDialog} from "./dialog";
-import { handleDeleteTodoButton } from "./buttonHandle";
+import { addTodoDialog, editTodoDialog } from "./dialog";
+import { handleDeleteTodoButton, changeCompleted } from "./buttonHandle";
 
 export default function createProjectSection() {
   var projectsDiv = document.querySelector(".projects");
@@ -51,7 +51,7 @@ function createTodoElement(project, todo) {
   todoElement.setAttribute('todoId', todo.getId());
   todoElement.addEventListener('click', editTodoDialog);
 
-  todoDiv.append(todoElement, createDeleteButton(project, todo));
+  todoDiv.append(todoElement, createDeleteButton(project, todo), createCheckInput(project, todo));
   return todoDiv;
 }
 
@@ -62,5 +62,26 @@ function createDeleteButton(project, todo) {
   deleteTodoButton.setAttribute('todoId', todo.getId());
   deleteTodoButton.addEventListener('click', handleDeleteTodoButton);
   return deleteTodoButton;
+}
+
+function createCheckInput(project, todo) {
+  var div = document.createElement('div');
+  var inputCheck = document.createElement('input');
+  inputCheck.type = 'checkbox';
+  inputCheck.setAttribute('id',`A${todo.getId()}`);
+  inputCheck.setAttribute('projectId', project.getId());
+  inputCheck.setAttribute('todoId', todo.getId());
+  inputCheck.checked = todo.getCompleted();
+  inputCheck.addEventListener('click', changeCompleted);
+
+  var completedLabel = document.createElement('label');
+  completedLabel.textContent = "completed";
+  completedLabel.setAttribute('for',`A${todo.getId()}`);
+  completedLabel.setAttribute('projectId', project.getId());
+  completedLabel.setAttribute('todoId', todo.getId());
+
+  div.append(inputCheck, completedLabel);
+
+  return div;
 }
 
