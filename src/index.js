@@ -1,5 +1,6 @@
 import createProjectSection from "./projectSection";
 import { addCancelEventListeners,openProjectDialog } from "./dialog";
+import './style.css';
 
 createProjectSection();
 addCancelEventListeners();

@@ -5,6 +5,7 @@ import { handleDeleteTodoButton, changeCompleted, deleteProject } from "./button
 
 export default function createProjectSection() {
   var projectsDiv = document.querySelector(".projects");
+
   if (projectsDiv.hasChildNodes()) {
     Array.from(projectsDiv.childNodes).forEach(child => {
       projectsDiv.removeChild(child);
@@ -16,6 +17,7 @@ export default function createProjectSection() {
     projects.addProject(defaultProject);
     localStorage.setItem('projects', stringifyProjects(projects));
   }
+
   populateProjects(JSON.parse(localStorage.getItem('projects')));
   var projectCards = projects.getProjectList().map((project) => createProjectCard(project))
 
@@ -24,6 +26,7 @@ export default function createProjectSection() {
 
 function createProjectCard(project) {
   var projectCard = document.createElement('div');
+  projectCard.setAttribute('class','project')
   var projectTitle = document.createElement("h1");
   projectTitle.textContent = project.getTitle();
 
@@ -33,6 +36,7 @@ function createProjectCard(project) {
   addToDoButton.addEventListener('click', addTodoDialog);
 
   var todoList = document.createElement('div');
+  todoList.setAttribute('class','todoList')
   project.getTodoList().forEach(todo => {
     todoList.append(createTodoElement(project, todo));
   });
@@ -52,14 +56,19 @@ function createProjectDeleteButton(project){
 
 function createTodoElement(project, todo) {
   var todoDiv = document.createElement('div');
-  var todoElement = document.createElement('h2');
+  todoDiv.setAttribute('class','todo')
+  var todoElement = document.createElement('p');
 
   todoElement.textContent = todo.getTitle();
   todoElement.setAttribute('projectId', project.getId());
   todoElement.setAttribute('todoId', todo.getId());
   todoElement.addEventListener('click', editTodoDialog);
 
-  todoDiv.append(todoElement, createDeleteTodoButton(project, todo), createCheckInput(project, todo));
+  var wrapperDiv = document.createElement('div');
+  var priority = document.createElement('p');
+  priority = todo.getPriority();
+  wrapperDiv.append(createDeleteTodoButton(project, todo), priority,createCheckInput(project, todo));
+  todoDiv.append(todoElement,wrapperDiv);
   return todoDiv;
 }
 

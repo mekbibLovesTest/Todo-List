@@ -1,0 +1,47 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #B6FFFA;
+  color: #80B3FF;
+}
+
+header {
+  display: grid;
+  grid-auto-flow: column;
+  justify-content: space-around;
+  box-shadow: 1px 2px 1px #80808017;
+  padding: 10px;
+}
+
+.projects {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  padding: 10px;
+  gap: 10px;
+}
+
+.project {
+  box-shadow: 2px 2px 1px #80808017;
+}
+
+.todoList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.todo {
+  display: grid;
+  grid-auto-flow: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.todo > div {
+  display: grid;
+  text-align: center;
+}
