@@ -4,6 +4,11 @@
   box-sizing: border-box;
 }
 
+:root {
+  --boxShadow-color:#80808099;
+}
+
+
 body {
   background-color: #B6FFFA;
   color: #80B3FF;
@@ -13,7 +18,7 @@ header {
   display: grid;
   grid-auto-flow: column;
   justify-content: space-around;
-  box-shadow: 1px 2px 1px #80808017;
+  box-shadow: 1px 2px 1px var( --boxShadow-color);
   padding: 10px;
 }
 
@@ -21,11 +26,11 @@ header {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   padding: 10px;
-  gap: 10px;
+  gap: 20px;
 }
 
 .project {
-  box-shadow: 2px 2px 1px #80808017;
+  box-shadow: 2px 2px 1px var( --boxShadow-color);
 }
 
 .todoList {
@@ -44,4 +49,43 @@ header {
 .todo > div {
   display: grid;
   text-align: center;
+}
+
+dialog {
+  margin: auto;
+  padding: 10px;
+  background-color: #80B3FF;
+  border: 0;
+}
+fieldset {
+  color: white;
+  padding: 10px;
+  border: 0;
+}
+
+form {
+  display: grid;
+  gap: 20px;
+}
+#todo {
+  border-radius: 10px;
+  width: 300px;
+}
+form  label {
+  display: block;
+}
+input:focus-visible, textarea:focus-visible {
+  outline: none;
+}
+input[type=radio]{
+  vertical-align: middle;
+}
+.priority {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 2px 2px 1px #ffffff4a;
+}
+.priority label  {
+  display: inline;
 }
