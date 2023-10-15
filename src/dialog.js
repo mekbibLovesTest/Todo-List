@@ -1,5 +1,5 @@
 import { projects } from "./projects";
-import { handleProjectSubmit, handleTodoSubmit, handleEditSubmit } from "./buttonHandle";
+import { handleProjectSubmit, handleTodoSubmit, handleEditSubmit, resetPage } from "./buttonHandle";
 
 export function addCancelEventListeners() {
   var projectCancel = document.querySelector('.projectCancel');
@@ -7,13 +7,13 @@ export function addCancelEventListeners() {
 
   projectCancel.addEventListener('click', (e) => {
     e.preventDefault();
-    closeDialog(document.querySelector('#project'));
-    resetForm('project');
+    var projectDialog = document.querySelector('#project');
+    resetPage(projectDialog, 'project');
   })
   todoCancel.addEventListener('click', (e) => {
     e.preventDefault();
-    closeDialog(document.querySelector('#todo'));
-    resetForm('todo');
+    var todoDialog = document.querySelector('#todo');
+    resetPage(todoDialog,'todo');
   })
 }
 

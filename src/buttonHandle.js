@@ -88,14 +88,26 @@ function validateTodoForm(todo) {
   return true;
 }
 
-function resetPage(dialog, type) {
+export function resetPage(dialog, type) {
   if (type && dialog) {
     resetForm(type);
     closeDialog(dialog);
+    removeEventListener(type);
   }
   localStorage.setItem('projects', stringifyProjects(projects));
   projects.resetProjectList();
   createProjectSection();
 }
 
+function removeEventListener(type){
+  if (type === 'project'){
+    var submitProject = document.querySelector('#submitProject');
+    submitProject.removeEventListener('click',handleProjectSubmit);
+  }
+  else  {
+    var submitTodo = document.querySelector('#todoSubmit');
+    submitTodo.removeEventListener('click',handleEditSubmit);
+    submitTodo.removeEventListener('click',handleTodoSubmit);
+  }
+}
 
