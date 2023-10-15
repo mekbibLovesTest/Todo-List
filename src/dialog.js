@@ -13,7 +13,7 @@ export function addCancelEventListeners() {
   todoCancel.addEventListener('click', (e) => {
     e.preventDefault();
     var todoDialog = document.querySelector('#todo');
-    resetPage(todoDialog,'todo');
+    resetPage(todoDialog, 'todo');
   })
 }
 
@@ -40,6 +40,7 @@ export function editTodoDialog(e) {
   populateDialogInput(todo)
   addEditTodoSubmitEventListener(projectId, todoId)
 }
+
 export function closeDialog(dialog) {
   dialog.close();
 }
@@ -74,7 +75,7 @@ function populateDialogInput(todo) {
   todoPriority.checked = true;
 }
 
-function formatDate(date) {
+export function formatDate(date) {
   const year = date.getFullYear();
   const month = date.getMonth().toString().length === 2 ? date.getMonth() : '0' + date.getMonth();
   const day = date.getDate().toString().length === 2 ? date.getDate() : '0' + date.getDate();

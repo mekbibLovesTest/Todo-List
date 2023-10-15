@@ -62,7 +62,7 @@ header button, .project button {
   align-items: center;
 }
 
-.todo > div {
+.todo > div:nth-child(2) {
   display: grid;
   text-align: center;
   padding-right: 5px;
@@ -115,4 +115,12 @@ input[type=radio], input[type=checkbox]{
 }
 .priority label  {
   display: inline;
+}
+
+.wrapperLeft {
+  display: grid;
+}
+
+.wrapperLeft button {
+  width: 50px;
 }

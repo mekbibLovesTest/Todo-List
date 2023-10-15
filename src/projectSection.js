@@ -1,6 +1,6 @@
 import createProject from "./project";
 import { projects, stringifyProjects, populateProjects } from "./projects";
-import { addTodoDialog, editTodoDialog } from "./dialog";
+import { addTodoDialog, editTodoDialog,formatDate } from "./dialog";
 import { handleDeleteTodoButton, changeCompleted, deleteProject } from "./buttonHandle";
 
 export default function createProjectSection() {
@@ -59,18 +59,23 @@ function createProjectDeleteButton(project){
 function createTodoElement(project, todo) {
   var todoDiv = document.createElement('div');
   todoDiv.setAttribute('class','todo')
-  var todoElement = document.createElement('p');
+  var wrapperDivLeft = document.createElement('div');
+  wrapperDivLeft.setAttribute('class','wrapperLeft')
 
-  todoElement.textContent = todo.getTitle();
-  todoElement.setAttribute('projectId', project.getId());
-  todoElement.setAttribute('todoId', todo.getId());
-  todoElement.addEventListener('click', editTodoDialog);
+  var todoTitle = document.createElement('p');
+  todoTitle.textContent = todo.getTitle();
 
-  var wrapperDiv = document.createElement('div');
+  var todoDate = document.createElement('time');
+  todoDate.textContent = formatDate(todo.getDueDate());
+  todoDate.setAttribute('datetime',formatDate(todo.getDueDate()));
+
+  wrapperDivLeft.append(todoTitle,todoDate,createEditButton(project,todo));
+
+  var wrapperDivRight = document.createElement('div');
   var priority = document.createElement('p');
   priority = todo.getPriority();
-  wrapperDiv.append(createDeleteTodoButton(project, todo), priority,createCheckInput(project, todo));
-  todoDiv.append(todoElement,wrapperDiv);
+  wrapperDivRight.append(createDeleteTodoButton(project, todo), priority,createCheckInput(project, todo));
+  todoDiv.append(wrapperDivLeft,wrapperDivRight);
   return todoDiv;
 }
 
@@ -79,8 +84,18 @@ function createDeleteTodoButton(project, todo) {
   deleteTodoButton.textContent = 'Delete';
   deleteTodoButton.setAttribute('projectId', project.getId());
   deleteTodoButton.setAttribute('todoId', todo.getId());
-  deleteTodoButton.addEventListener('click', handleDeleteTodoButton);
+  deleteTodoButton.addEventListener('click', handleDeleteTodoButton,true);
   return deleteTodoButton;
+}
+function createEditButton(project,todo) {
+  var editButton = document.createElement('button');
+  editButton.textContent = 'Edit';
+  editButton.setAttribute('projectId', project.getId());
+  editButton.setAttribute('todoId', todo.getId());
+  editButton.setAttribute('class','todoTitle');
+  editButton.addEventListener('click', editTodoDialog);
+  
+  return editButton;
 }
 
 function createCheckInput(project, todo) {
