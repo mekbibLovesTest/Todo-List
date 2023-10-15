@@ -40,8 +40,10 @@ function createProjectCard(project) {
   project.getTodoList().forEach(todo => {
     todoList.append(createTodoElement(project, todo));
   });
-
-  projectCard.append(projectTitle, addToDoButton, createProjectDeleteButton(project), todoList);
+  var buttonsDiv = document.createElement('div');
+  buttonsDiv.setAttribute('class','projectButtons');
+  buttonsDiv.append(addToDoButton,createProjectDeleteButton(project))
+  projectCard.append(projectTitle, buttonsDiv, todoList);
   return projectCard;
 }
 

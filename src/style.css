@@ -6,12 +6,15 @@
 
 :root {
   --boxShadow-color:#80808099;
+  --text-color:#80B3FF;
+  --bg-color:#B6FFFA;
+  --dg-text-color:white;
 }
 
 
 body {
-  background-color: #B6FFFA;
-  color: #80B3FF;
+  background-color: var(--bg-color);
+  color: var(--text-color);
 }
 
 header {
@@ -21,7 +24,13 @@ header {
   box-shadow: 1px 2px 1px var( --boxShadow-color);
   padding: 10px;
 }
-
+header button, .project button {
+  background-color: var(--bg-color);
+  border: 1px solid var(--boxShadow-color);
+  border-radius: 10px;
+  box-shadow: 0px 1px var(--boxShadow-color);
+  color: #80B3FF;
+}
 .projects {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -32,7 +41,14 @@ header {
 .project {
   box-shadow: 2px 2px 1px var( --boxShadow-color);
 }
-
+.projectButtons {
+  padding: 5px;
+  display: flex;
+  gap: 5px;
+}
+.projectButtons > button {
+  padding: 5px;
+}
 .todoList {
   display: flex;
   flex-direction: column;
@@ -49,6 +65,7 @@ header {
 .todo > div {
   display: grid;
   text-align: center;
+  padding-right: 5px;
 }
 
 dialog {
@@ -58,7 +75,7 @@ dialog {
   border: 0;
 }
 fieldset {
-  color: white;
+  color: var(--dg-text-color);
   padding: 10px;
   border: 0;
 }
@@ -67,6 +84,15 @@ form {
   display: grid;
   gap: 20px;
 }
+
+form button {
+  background-color: #80B3FF;
+  color: var( --dg-text-color);
+  border-radius: 10px;
+  padding: 5px;
+  border: 1px solid var( --dg-text-color);
+}
+
 #todo {
   border-radius: 10px;
   width: 300px;
@@ -74,10 +100,11 @@ form {
 form  label {
   display: block;
 }
+
 input:focus-visible, textarea:focus-visible {
   outline: none;
 }
-input[type=radio]{
+input[type=radio], input[type=checkbox]{
   vertical-align: middle;
 }
 .priority {
