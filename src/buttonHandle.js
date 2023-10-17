@@ -101,11 +101,11 @@ export function resetPage(dialog, type) {
 
 function removeEventListener(type){
   if (type === 'project'){
-    var submitProject = document.querySelector('#submitProject');
+    let submitProject = document.querySelector('#submitProject');
     submitProject.removeEventListener('click',handleProjectSubmit);
   }
   else  {
-    var submitTodo = document.querySelector('#todoSubmit');
+    let submitTodo = document.querySelector('#todoSubmit');
     submitTodo.removeEventListener('click',handleEditSubmit);
     submitTodo.removeEventListener('click',handleTodoSubmit);
   }

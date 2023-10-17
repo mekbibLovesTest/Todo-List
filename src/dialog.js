@@ -46,19 +46,19 @@ export function closeDialog(dialog) {
 }
 export function resetForm(type) {
   if (type === 'project') {
-    var projectTitle = document.querySelector('#projectTitle');
+    let projectTitle = document.querySelector('#projectTitle');
     projectTitle.value = '';
   }
   else if (type === 'todo') {
-    var title = document.querySelector('#todoTitle');
+    let title = document.querySelector('#todoTitle');
     title.value = '';
-    var description = document.querySelector('#description');
+    let description = document.querySelector('#description');
     description.value = '';
-    var dueDate = document.querySelector('#dueDate');
+    let dueDate = document.querySelector('#dueDate');
     dueDate.value = '';
-    var checkedPriority = document.querySelector(`input[type='radio']:checked`);
+    let checkedPriority = document.querySelector(`input[type='radio']:checked`);
     checkedPriority.checked = false;
-    var mediumPriority = document.querySelector('input#medium');
+    let mediumPriority = document.querySelector('input#medium');
     mediumPriority.checked = true;
   }
 }

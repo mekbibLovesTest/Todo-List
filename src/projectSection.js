@@ -13,7 +13,7 @@ export default function createProjectSection() {
   }
 
   if (localStorage.getItem('projects') === null) {
-    var defaultProject = createProject('default');
+    let defaultProject = createProject('default');
     projects.addProject(defaultProject);
     localStorage.setItem('projects', stringifyProjects(projects));
   }
