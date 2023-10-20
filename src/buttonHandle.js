@@ -3,6 +3,7 @@ import createProject from "./project";
 import createProjectSection from "./projectSection";
 import { projects, stringifyProjects } from "./projects";
 import { closeDialog, resetForm } from "./dialog";
+
 export function handleProjectSubmit(e) {
   var projectTitle = document.querySelector('#projectTitle');
   if (projectTitle.value === '')
@@ -25,7 +26,7 @@ export function handleTodoSubmit(e) {
     let todoDialog = document.querySelector('#todo');
     let todoData = getTodoData();
     let todo = createTodo(todoData.title, todoData.description, new Date(todoData.dueDate), todoData.priority, false);
-    projects.findProject(e.target.getAttribute('data-attribute')).addTodo(todo);
+    projects.findProject(e.target.getAttribute('data-attribute')).handleNewTodo(todo);
 
     e.target.removeEventListener('click', handleTodoSubmit);
     resetPage(todoDialog, 'todo');
@@ -37,6 +38,7 @@ export function handleDeleteTodoButton(e) {
   project.deleteTodo(todo.getId());
   resetPage();
 }
+
 export function handleEditSubmit(e) {
   if (validateTodoForm(getTodoData()) === false)
     return;
@@ -52,6 +54,7 @@ export function handleEditSubmit(e) {
     resetPage(todoDialog, 'todo');
   }
 }
+
 export function changeCompleted(e) {
   var projectId = e.target.getAttribute('projectId');
   var todoId = e.target.getAttribute('todoId');
@@ -61,6 +64,7 @@ export function changeCompleted(e) {
   todo.setCompleted(newCompletedValue);
   localStorage.setItem('projects',stringifyProjects(projects));
 }
+
 export function deleteProject(e){
   projects.deleteProject(e.target.getAttribute('projectId'));
   resetPage();

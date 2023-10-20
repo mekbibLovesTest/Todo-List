@@ -23,13 +23,13 @@ export function openProjectDialog() {
   addProjectSubmitEventListener();
 }
 
-export function addTodoDialog(e) {
+export function openAddTodoDialog(e) {
   var dialog = document.querySelector('#todo');
   dialog.showModal();
   addTodoSubmitButtonEventListener(e.target.getAttribute('data-attribute'));
 }
 
-export function editTodoDialog(e) {
+export function openEditTodoDialog(e) {
   const todoId = e.target.getAttribute('todoId');
   const projectId = e.target.getAttribute('projectId');
   var project = projects.findProject(projectId);
@@ -44,6 +44,7 @@ export function editTodoDialog(e) {
 export function closeDialog(dialog) {
   dialog.close();
 }
+
 export function resetForm(type) {
   if (type === 'project') {
     let projectTitle = document.querySelector('#projectTitle');

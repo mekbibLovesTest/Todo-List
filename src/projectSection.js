@@ -1,121 +1,164 @@
 import createProject from "./project";
 import { projects, stringifyProjects, populateProjects } from "./projects";
-import { addTodoDialog, editTodoDialog,formatDate } from "./dialog";
+import { openAddTodoDialog, openEditTodoDialog, formatDate } from "./dialog";
 import { handleDeleteTodoButton, changeCompleted, deleteProject } from "./buttonHandle";
 
 export default function createProjectSection() {
   var projectsDiv = document.querySelector(".projects");
-
   if (projectsDiv.hasChildNodes()) {
-    Array.from(projectsDiv.childNodes).forEach(child => {
-      projectsDiv.removeChild(child);
-    })
+    clearProjectsChild(projectsDiv);
   }
-
   if (localStorage.getItem('projects') === null) {
-    let defaultProject = createProject('default');
-    projects.addProject(defaultProject);
-    localStorage.setItem('projects', stringifyProjects(projects));
+    initializeLocalStorage();
   }
-
   populateProjects(JSON.parse(localStorage.getItem('projects')));
-  var projectCards = projects.getProjectList().map((project) => createProjectCard(project))
+  projectsDiv.append(...createProjectCards(projects.getProjectList()));
+}
 
-  projectsDiv.append(...projectCards)
+function createProjectCards(projectList) {
+  return projectList.map((project) => createProjectCard(project));
+}
+
+function clearProjectsChild(projectsDiv) {
+  Array.from(projectsDiv.childNodes).forEach(child => {
+    projectsDiv.removeChild(child);
+  })
+}
+
+function initializeLocalStorage() {
+  let defaultProject = createProject('default');
+  projects.addProject(defaultProject);
+  localStorage.setItem('projects', stringifyProjects(projects));
 }
 
 function createProjectCard(project) {
   var projectCard = document.createElement('div');
-  projectCard.setAttribute('class','project')
+  projectCard.setAttribute('class', 'project')
   var projectTitle = document.createElement("h1");
   projectTitle.textContent = project.getTitle();
+  projectCard.append(projectTitle, createButtonsDiv(project.getId()), createTodoListDiv(project));
 
-  var addToDoButton = document.createElement("button");
-  addToDoButton.textContent = 'Add';
-  addToDoButton.setAttribute('data-attribute', project.getId())
-  addToDoButton.addEventListener('click', addTodoDialog);
-
-  var todoList = document.createElement('div');
-  todoList.setAttribute('class','todoList')
-  project.getTodoList().forEach(todo => {
-    todoList.append(createTodoElement(project, todo));
-  });
-  var buttonsDiv = document.createElement('div');
-  buttonsDiv.setAttribute('class','projectButtons');
-  buttonsDiv.append(addToDoButton,createProjectDeleteButton(project))
-  projectCard.append(projectTitle, buttonsDiv, todoList);
   return projectCard;
 }
+function createButtonsDiv(projectId) {
+  var buttonsDiv = document.createElement('div');
+  buttonsDiv.setAttribute('class', 'projectButtons');
+  buttonsDiv.append(createAddTodoButton(projectId), createProjectDeleteButton(projectId))
 
-function createProjectDeleteButton(project){
+  return buttonsDiv;
+}
+function createAddTodoButton(projectId) {
+  var addToDoButton = document.createElement("button");
+  addToDoButton.textContent = 'Add';
+  addToDoButton.setAttribute('data-attribute', projectId);
+  addToDoButton.addEventListener('click', openAddTodoDialog);
+
+  return addToDoButton;
+}
+function createProjectDeleteButton(projectId) {
   var deleteProjectButton = document.createElement('button');
   deleteProjectButton.textContent = 'delete';
-  deleteProjectButton.setAttribute('projectId',project.getId());
-  deleteProjectButton.addEventListener('click',deleteProject);
-  
+  deleteProjectButton.setAttribute('projectId', projectId);
+  deleteProjectButton.addEventListener('click', deleteProject);
+
   return deleteProjectButton;
 }
+function createTodoListDiv(project) {
+  var todoListDiv = document.createElement('div');
+  todoListDiv.setAttribute('class', 'todoList')
+  project.getTodoList().forEach(todo => {
+    todoListDiv.append(createTodoDiv(project, todo));
+  });
 
-function createTodoElement(project, todo) {
+  return todoListDiv;
+}
+
+function createTodoDiv(project, todo) {
   var todoDiv = document.createElement('div');
-  todoDiv.setAttribute('class','todo')
+  todoDiv.setAttribute('class', 'todo')
   var wrapperDivLeft = document.createElement('div');
-  wrapperDivLeft.setAttribute('class','wrapperLeft')
-
-  var todoTitle = document.createElement('p');
-  todoTitle.textContent = todo.getTitle();
-
-  var todoDate = document.createElement('time');
-  todoDate.textContent = formatDate(todo.getDueDate());
-  todoDate.setAttribute('datetime',formatDate(todo.getDueDate()));
-
-  wrapperDivLeft.append(todoTitle,todoDate,createEditButton(project,todo));
+  wrapperDivLeft.setAttribute('class', 'wrapperLeft')
+  wrapperDivLeft.append(createTodoTitle(todo.getTitle()), createTodoDate(todo.getDueDate()),
+    createEditButton(project.getId(), todo.getId()));
 
   var wrapperDivRight = document.createElement('div');
-  var priority = document.createElement('p');
-  priority = todo.getPriority();
-  wrapperDivRight.append(createDeleteTodoButton(project, todo), priority,createCheckInput(project, todo));
-  todoDiv.append(wrapperDivLeft,wrapperDivRight);
+  wrapperDivRight.append(createDeleteTodoButton(project.getId(), todo.getId()),
+    createPriorityElement(todo.getPriority()), createCheckDiv(project.getId(),
+      todo.getId(), todo.getCompleted()));
+
+  todoDiv.append(wrapperDivLeft, wrapperDivRight);
+
   return todoDiv;
 }
 
-function createDeleteTodoButton(project, todo) {
+function createTodoTitle(title) {
+  var todoTitle = document.createElement('p');
+  todoTitle.textContent = title;
+
+  return todoTitle
+}
+
+function createTodoDate(dueDate) {
+  var todoDate = document.createElement('time');
+  todoDate.textContent = formatDate(dueDate);
+  todoDate.setAttribute('datetime', formatDate(dueDate));
+
+  return todoDate;
+}
+
+function createDeleteTodoButton(projectId, todoId) {
   var deleteTodoButton = document.createElement('button');
   deleteTodoButton.textContent = 'Delete';
-  deleteTodoButton.setAttribute('projectId', project.getId());
-  deleteTodoButton.setAttribute('todoId', todo.getId());
-  deleteTodoButton.addEventListener('click', handleDeleteTodoButton,true);
+  deleteTodoButton.setAttribute('projectId', projectId);
+  deleteTodoButton.setAttribute('todoId', todoId);
+  deleteTodoButton.addEventListener('click', handleDeleteTodoButton, true);
+
   return deleteTodoButton;
 }
-function createEditButton(project,todo) {
+
+function createPriorityElement(priorityText) {
+  var priority = document.createElement('p');
+  priority.textContent = priorityText;
+
+  return priority;
+}
+
+function createEditButton(projectId, todoId) {
   var editButton = document.createElement('button');
   editButton.textContent = 'Edit';
-  editButton.setAttribute('projectId', project.getId());
-  editButton.setAttribute('todoId', todo.getId());
-  editButton.setAttribute('class','todoTitle');
-  editButton.addEventListener('click', editTodoDialog);
-  
+  editButton.setAttribute('projectId', projectId);
+  editButton.setAttribute('todoId', todoId);
+  editButton.setAttribute('class', 'todoTitle');
+  editButton.addEventListener('click', openEditTodoDialog);
+
   return editButton;
 }
 
-function createCheckInput(project, todo) {
+function createCheckDiv(projectId, todoId, completed) {
   var div = document.createElement('div');
-  var inputCheck = document.createElement('input');
-  inputCheck.type = 'checkbox';
-  inputCheck.setAttribute('id',`A${todo.getId()}`);
-  inputCheck.setAttribute('projectId', project.getId());
-  inputCheck.setAttribute('todoId', todo.getId());
-  inputCheck.checked = todo.getCompleted();
-  inputCheck.addEventListener('click', changeCompleted);
-
-  var completedLabel = document.createElement('label');
-  completedLabel.textContent = "completed";
-  completedLabel.setAttribute('for',`A${todo.getId()}`);
-  completedLabel.setAttribute('projectId', project.getId());
-  completedLabel.setAttribute('todoId', todo.getId());
-
-  div.append(inputCheck, completedLabel);
+  div.append(createCheckInput(projectId, todoId, completed), createCompletedLabel(projectId, todoId));
 
   return div;
 }
 
+function createCheckInput(projectId, todoId, completed) {
+  var inputCheck = document.createElement('input');
+  inputCheck.type = 'checkbox';
+  inputCheck.setAttribute('id', `A${todoId}`);
+  inputCheck.setAttribute('projectId', projectId);
+  inputCheck.setAttribute('todoId', todoId);
+  inputCheck.checked = completed;
+  inputCheck.addEventListener('click', changeCompleted);
+
+  return inputCheck;
+}
+
+function createCompletedLabel(projectId, todoId) {
+  var completedLabel = document.createElement('label');
+  completedLabel.textContent = "completed";
+  completedLabel.setAttribute('for', `A${todoId}`);
+  completedLabel.setAttribute('projectId', projectId);
+  completedLabel.setAttribute('todoId', todoId);
+
+  return completedLabel;
+}

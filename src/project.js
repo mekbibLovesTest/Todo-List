@@ -1,11 +1,11 @@
 import { compareAsc} from 'date-fns'
 
 function createProject(title){
-  const id = Math.floor(Math.random() * 10000000);
-  var todoList = [];
+  const _id = Math.floor(Math.random() * 10000000);
+  var _todoList = [];
 
   function getId(){
-    return id;
+    return _id;
   }
 
   function getTitle(){
@@ -17,27 +17,27 @@ function createProject(title){
   }
 
   function getTodoList(){
-    return todoList;
+    return _todoList;
   }
 
-  function addTodo(todo){
-    todoList.push(todo);
-    sortTodoList();
+  function handleNewTodo(todo){
+    _todoList.push(todo);
+    _sortTodoList();
   }
 
   function findTodo(id){
-    return todoList.find(todo => todo.getId() == id);
+    return _todoList.find(todo => todo.getId() == id);
   }
 
   function deleteTodo(id){
-    todoList = todoList.filter(todo => todo.getId() != id);
+    _todoList = _todoList.filter(todo => todo.getId() != id);
   }
-  function sortTodoList(){
-    todoList.sort((left,right) => compareAsc(left.getDueDate(),right.getDueDate()));
+  function _sortTodoList(){
+    _todoList.sort((left,right) => compareAsc(left.getDueDate(),right.getDueDate()));
   }
   return {
     getId,getTitle,getTodoList,
-    setTitle,addTodo,findTodo,deleteTodo
+    setTitle,handleNewTodo,findTodo,deleteTodo
   }
 }
 

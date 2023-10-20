@@ -2,25 +2,25 @@ import createProject from "./project";
 import createTodo from "./todo";
 
 export var projects = (() => {
-  var projectList = [];
+  var _projectList = [];
 
   function getProjectList() {
-    return projectList;
+    return _projectList;
   }
 
   function addProject(project) {
-    projectList.push(project);
+    _projectList.push(project);
   }
 
   function resetProjectList() {
-    projectList = [];
+    _projectList = [];
   }
   function findProject(id) {
-    return projectList.find(project => project.getId() == id);
+    return _projectList.find(project => project.getId() == id);
   }
 
   function deleteProject(id) {
-    projectList = projectList.filter(project => project.getId() != id);
+    _projectList = _projectList.filter(project => project.getId() != id);
   }
 
   return { getProjectList, addProject, findProject, deleteProject, resetProjectList };
@@ -29,11 +29,11 @@ export var projects = (() => {
 export function populateProjects(projectFromStorage) {
   projects.resetProjectList();
   projectFromStorage.forEach(project => {
-    let newProject = createProject(project["title"]);
+    var newProject = createProject(project["title"]);
     project["todoList"].forEach(todo => {
-      let newTodo = createTodo(todo["title"], todo["description"], new Date(todo["dueDate"]),
+      var newTodo = createTodo(todo["title"], todo["description"], new Date(todo["dueDate"]),
         todo["priority"], todo["completed"]);
-      newProject.addTodo(newTodo);
+      newProject.handleNewTodo(newTodo);
     });
 
     projects.addProject(newProject);
