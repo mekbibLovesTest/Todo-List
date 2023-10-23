@@ -1,74 +1,90 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
+  <head>
+    <meta charset="utf-8" />
+    <title>ToDo List</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script defer src="main.js"></script>
+  </head>
 
-<head>
-  <meta charset="utf-8">
-  <title>ToDo List</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script defer src="main.js"></script>
-</head>
-
-<body>
-  <dialog id="todo">
-    <fieldset>
-      <legend>Add ToDo</legend>
-      <form method="dialog">
-        <span>
-          <label for="todoTitle">Title:</label>
-          <input type="text" name="title" id="todoTitle" required autofocus>
-        </span>
-        <span>
-          <label for="description">Description:</label>
-          <textarea name="description" id="description" cols="30" rows="10" required></textarea>
-        </span>
-        <span>
-          <label for="dueDate">Date:</label>
-          <input type="date" name="date" id="dueDate" required>
-        </span>
-        <fieldset class="priority">
-          <legend>Priority</legend>
+  <body>
+    <dialog id="todo">
+      <fieldset>
+        <legend>Add ToDo</legend>
+        <form method="dialog">
           <span>
-            <label for="high">High:</label>
-            <input type="radio" name="priority" id="high" value="high">
+            <label for="todoTitle">Title:</label>
+            <input type="text" name="title" id="todoTitle" required autofocus />
           </span>
           <span>
-            <label for="medium">Medium:</label>
-            <input type="radio" name="priority" id="medium" value="medium" checked>
+            <label for="description">Description:</label>
+            <textarea
+              name="description"
+              id="description"
+              cols="30"
+              rows="10"
+              required
+            ></textarea>
           </span>
           <span>
-            <label for="low">Low:</label>
-            <input type="radio" name="priority" id="low" value="low">
+            <label for="dueDate">Date:</label>
+            <input type="date" name="date" id="dueDate" required />
           </span>
-        </fieldset>
-        <div class="buttons">
-          <button class="todoCancel">Cancel</button>
-          <button formmethod="dialog" id="todoSubmit">submit</button>
-        </div>
-      </form>
-    </fieldset>
-  </dialog>
-  <dialog id="project">
-    <fieldset>
-      <Legend>Add Project</Legend>
-      <form method="dialog">
-        <span>
-          <label for="projectTitle">Title:</label>
-          <input type="text" name="title" id="projectTitle" required autofocus>
-        </span>
-        <div class="buttons">
-          <button class="projectCancel">Cancel</button>
-          <button formmethod="dialog" id="submitProject">Submit</button>
-        </div>
-      </form>
-    </fieldset>
-  </dialog>
-  <header>
-    <h1>Todo List</h1>
-    <button id="addProject">Add project</button>
-  </header>
-  <div class="content">
-    <div class="projects"></div>
-  </div>
-</body>
-
+          <fieldset class="priority">
+            <legend>Priority</legend>
+            <span>
+              <label for="high">High:</label>
+              <input type="radio" name="priority" id="high" value="high" />
+            </span>
+            <span>
+              <label for="medium">Medium:</label>
+              <input
+                type="radio"
+                name="priority"
+                id="medium"
+                value="medium"
+                checked
+              />
+            </span>
+            <span>
+              <label for="low">Low:</label>
+              <input type="radio" name="priority" id="low" value="low" />
+            </span>
+          </fieldset>
+          <div class="buttons">
+            <button class="todoCancel">Cancel</button>
+            <button formmethod="dialog" id="todoSubmit">submit</button>
+          </div>
+        </form>
+      </fieldset>
+    </dialog>
+    <dialog id="project">
+      <fieldset>
+        <legend>Add Project</legend>
+        <form method="dialog">
+          <span>
+            <label for="projectTitle">Title:</label>
+            <input
+              type="text"
+              name="title"
+              id="projectTitle"
+              required
+              autofocus
+            />
+          </span>
+          <div class="buttons">
+            <button class="projectCancel">Cancel</button>
+            <button formmethod="dialog" id="submitProject">Submit</button>
+          </div>
+        </form>
+      </fieldset>
+    </dialog>
+    <header>
+      <h1>Todo List</h1>
+      <button id="addProject">Add project</button>
+    </header>
+    <div class="content">
+      <div class="projects"></div>
+    </div>
+  </body>
 </html>

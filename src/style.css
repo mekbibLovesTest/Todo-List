@@ -5,12 +5,11 @@
 }
 
 :root {
-  --boxShadow-color:#80808099;
-  --text-color:#80B3FF;
-  --bg-color:#B6FFFA;
-  --dg-text-color:white;
+  --boxShadow-color: #80808099;
+  --text-color: #80b3ff;
+  --bg-color: #b6fffa;
+  --dg-text-color: white;
 }
-
 
 body {
   background-color: var(--bg-color);
@@ -21,15 +20,16 @@ header {
   display: grid;
   grid-auto-flow: column;
   justify-content: space-around;
-  box-shadow: 1px 2px 1px var( --boxShadow-color);
+  box-shadow: 1px 2px 1px var(--boxShadow-color);
   padding: 10px;
 }
-header button, .project button {
+header button,
+.project button {
   background-color: var(--bg-color);
   border: 1px solid var(--boxShadow-color);
   border-radius: 10px;
   box-shadow: 0px 1px var(--boxShadow-color);
-  color: #80B3FF;
+  color: #80b3ff;
 }
 .projects {
   display: grid;
@@ -39,7 +39,7 @@ header button, .project button {
 }
 
 .project {
-  box-shadow: 2px 2px 1px var( --boxShadow-color);
+  box-shadow: 2px 2px 1px var(--boxShadow-color);
 }
 .projectButtons {
   padding: 5px;
@@ -71,7 +71,7 @@ header button, .project button {
 dialog {
   margin: auto;
   padding: 10px;
-  background-color: #80B3FF;
+  background-color: #80b3ff;
   border: 0;
 }
 fieldset {
@@ -86,25 +86,27 @@ form {
 }
 
 form button {
-  background-color: #80B3FF;
-  color: var( --dg-text-color);
+  background-color: #80b3ff;
+  color: var(--dg-text-color);
   border-radius: 10px;
   padding: 5px;
-  border: 1px solid var( --dg-text-color);
+  border: 1px solid var(--dg-text-color);
 }
 
 #todo {
   border-radius: 10px;
   width: 300px;
 }
-form  label {
+form label {
   display: block;
 }
 
-input:focus-visible, textarea:focus-visible {
+input:focus-visible,
+textarea:focus-visible {
   outline: none;
 }
-input[type=radio], input[type=checkbox]{
+input[type="radio"],
+input[type="checkbox"] {
   vertical-align: middle;
 }
 .priority {
@@ -113,7 +115,7 @@ input[type=radio], input[type=checkbox]{
   gap: 10px;
   box-shadow: 2px 2px 1px #ffffff4a;
 }
-.priority label  {
+.priority label {
   display: inline;
 }
 

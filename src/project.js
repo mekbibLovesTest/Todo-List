@@ -1,44 +1,51 @@
-import { compareAsc} from 'date-fns'
+import { compareAsc } from "date-fns";
 
-function createProject(title){
+function createProject(title) {
   const _id = Math.floor(Math.random() * 10000000);
   var _todoList = [];
 
-  function getId(){
+  function getId() {
     return _id;
   }
 
-  function getTitle(){
+  function getTitle() {
     return title;
   }
 
-  function setTitle(newTitle){
+  function setTitle(newTitle) {
     title = newTitle;
   }
 
-  function getTodoList(){
+  function getTodoList() {
     return _todoList;
   }
 
-  function handleNewTodo(todo){
+  function handleNewTodo(todo) {
     _todoList.push(todo);
     _sortTodoList();
   }
 
-  function findTodo(id){
-    return _todoList.find(todo => todo.getId() == id);
+  function findTodo(id) {
+    return _todoList.find((todo) => todo.getId() == id);
   }
 
-  function deleteTodo(id){
-    _todoList = _todoList.filter(todo => todo.getId() != id);
+  function deleteTodo(id) {
+    _todoList = _todoList.filter((todo) => todo.getId() != id);
   }
-  function _sortTodoList(){
-    _todoList.sort((left,right) => compareAsc(left.getDueDate(),right.getDueDate()));
+  function _sortTodoList() {
+    _todoList.sort((left, right) =>
+      compareAsc(left.getDueDate(), right.getDueDate()),
+    );
   }
   return {
-    getId,getTitle,getTodoList,
-    setTitle,handleNewTodo,findTodo,deleteTodo
-  }
+    getId,
+    getTitle,
+    getTodoList,
+    setTitle,
+    handleNewTodo,
+    findTodo,
+    deleteTodo,
+  };
 }
 
 export default createProject;

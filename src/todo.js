@@ -3,7 +3,7 @@ export default createTodo;
 function createTodo(title, description, dueDate, priority, completed) {
   const _id = Math.floor(Math.random() * 10000000);
 
-  function getId(){
+  function getId() {
     return _id;
   }
 
@@ -47,10 +47,17 @@ function createTodo(title, description, dueDate, priority, completed) {
     completed = newCompleted;
   }
 
-
-
   return {
-    getId,getTitle, getDescription, getDueDate, getPriority, getCompleted,
-    setTitle, setDescription, setDueDate, setPriority, setCompleted
-  }
+    getId,
+    getTitle,
+    getDescription,
+    getDueDate,
+    getPriority,
+    getCompleted,
+    setTitle,
+    setDescription,
+    setDueDate,
+    setPriority,
+    setCompleted,
+  };
 }
