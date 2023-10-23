@@ -23,10 +23,11 @@ export function handleTodoSubmit(e) {
 
     let todoDialog = document.querySelector("#todo");
     let todoData = getTodoData();
+    const [year, month, date] = todoData.dueDate.split("-");
     let todo = createTodo(
       todoData.title,
       todoData.description,
-      new Date(todoData.dueDate),
+      new Date(year, month - 1, date),
       todoData.priority,
       false,
     );
@@ -77,7 +78,8 @@ export function deleteProject(e) {
 function editTodo(todoData, todo) {
   todo.setTitle(todoData.title);
   todo.setDescription(todoData.description);
-  todo.setDueDate(new Date(todoData.dueDate));
+  const [year, month, date] = todoData.dueDate.split("-");
+  todo.setDueDate(new Date(year, month, date));
   todo.setPriority(todoData.priority);
 }
 

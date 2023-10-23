@@ -85,11 +85,11 @@ export function formatDate(date) {
   const month =
     date.getMonth().toString().length === 2
       ? date.getMonth()
-      : "0" + date.getMonth();
+      : `0${date.getMonth()}`;
   const day =
     date.getDate().toString().length === 2
       ? date.getDate()
-      : "0" + date.getDate();
+      : `0${date.getDate()}`;
 
   return `${year}-${month}-${day}`;
 }
